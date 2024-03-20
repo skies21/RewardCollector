@@ -7,13 +7,13 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-func CreateToolbar(win fyne.Window, data []interface{}) *widget.Toolbar {
+func CreateToolbar(win fyne.Window, data []interface{}, openedFilePath string) *widget.Toolbar {
 	openButton := widget.NewToolbarAction(theme.FolderOpenIcon(), func() {
 		OpenFile(win)
 	})
 
 	saveButton := widget.NewToolbarAction(theme.DocumentSaveIcon(), func() {
-		SaveFile(win)
+		SaveFile(win, data, openedFilePath)
 	})
 
 	exportButton := widget.NewToolbarAction(theme.DownloadIcon(), func() {
@@ -22,7 +22,7 @@ func CreateToolbar(win fyne.Window, data []interface{}) *widget.Toolbar {
 
 	filterButton := widget.NewToolbarAction(theme.HelpIcon(), func() {
 		filteredData := table.FilterTable(data)
-		UpdateWin(win, filteredData)
+		UpdateWin(win, filteredData, openedFilePath)
 	})
 
 	toolbar := widget.NewToolbar(

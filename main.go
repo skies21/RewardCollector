@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	var openedFilePath string
 	files, err := os.ReadDir(".")
 	if err != nil {
 		fmt.Println("Error reading directory:", err)
@@ -18,6 +19,8 @@ func main() {
 	var jsonData []byte
 	for _, file := range files {
 		if !file.IsDir() && strings.HasSuffix(file.Name(), ".json") {
+			openedFilePath = file.Name()
+			println(openedFilePath)
 			jsonData, err = os.ReadFile(file.Name())
 			if err != nil {
 				fmt.Println("Error reading file:", err)
@@ -40,7 +43,7 @@ func main() {
 	myApp := app.New()
 	win := myApp.NewWindow("Rewards")
 
-	tools.UpdateWin(win, data)
+	tools.UpdateWin(win, data, openedFilePath)
 
 	win.ShowAndRun()
 }

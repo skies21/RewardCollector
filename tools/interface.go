@@ -7,8 +7,8 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-func UpdateWin(win fyne.Window, data []interface{}) {
-	mainToolbar := CreateToolbar(win, data)
+func UpdateWin(win fyne.Window, data []interface{}, openedFilePath string) {
+	mainToolbar := CreateToolbar(win, data, openedFilePath)
 	label := widget.NewLabel("Rewards Table")
 	toolbarHeight := mainToolbar.MinSize().Height
 	mainToolbar.Move(fyne.NewPos(0, 0))

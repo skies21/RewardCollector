@@ -2,10 +2,13 @@ package tools
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/dialog"
 	"io"
+	_ "io/ioutil"
+	"os"
 )
 
 func OpenFile(win fyne.Window) {
@@ -29,45 +32,37 @@ func OpenFile(win fyne.Window) {
 			fmt.Println("Error reading file:", err)
 			return
 		}
+		openedFilePath := reader.URI().Name()
 		var data []interface{}
 		if err := json.Unmarshal(jsonData, &data); err != nil {
 			fmt.Println("Error decoding JSON:", err)
 			return
 		}
-		UpdateWin(win, data)
+		UpdateWin(win, data, openedFilePath)
 	}, win)
 	fileDialog.Show()
 }
 
-func SaveFile(win fyne.Window) {
-	fileDialog := dialog.NewFileSave(func(writer fyne.URIWriteCloser, err error) {
-		if err != nil {
-			dialog.ShowError(err, win)
-			return
-		}
-		if writer == nil {
-			return
-		}
-		defer func(writer fyne.URIWriteCloser) {
-			err := writer.Close()
-			if err != nil {
+func SaveFile(win fyne.Window, data []interface{}, openedFilePath string) {
+	if openedFilePath == "" {
+		dialog.ShowError(errors.New("no file opened"), win)
+		return
+	}
+	jsonData, err := json.Marshal(data)
+	if err != nil {
+		dialog.ShowError(err, win)
+		return
+	}
 
-			}
-		}(writer)
-
-		// Запись данных в файл
-		// Пример:
-		// _, err = writer.Write([]byte("Hello, world!"))
-		// if err != nil {
-		// 	dialog.ShowError(err, win)
-		// 	return
-		// }
-	}, win)
-	fileDialog.Show()
+	err = os.WriteFile(openedFilePath, jsonData, 0644)
+	if err != nil {
+		dialog.ShowError(err, win)
+		return
+	}
 }
 
 func ExportData(win fyne.Window) {
-	// Пример данных, которые будут экспортированы
+
 	data := map[string]interface{}{
 		"key": "value",
 	}
@@ -82,8 +77,6 @@ func ExportData(win fyne.Window) {
 
 			}
 		}(uc)
-
-		// Запись данных в файл
 		err = json.NewEncoder(uc).Encode(data)
 		if err != nil {
 			dialog.ShowError(err, nil)
@@ -91,7 +84,6 @@ func ExportData(win fyne.Window) {
 		}
 	}, win)
 
-	// Отображение диалога
 	saveDialog.SetFileName("data.json")
 	saveDialog.Show()
 }
