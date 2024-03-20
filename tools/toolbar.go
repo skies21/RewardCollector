@@ -17,7 +17,7 @@ func CreateToolbar(win fyne.Window, data []interface{}, openedFilePath string) *
 	})
 
 	exportButton := widget.NewToolbarAction(theme.DownloadIcon(), func() {
-		ExportData(win)
+		ExportData(win, data)
 	})
 
 	filterButton := widget.NewToolbarAction(theme.HelpIcon(), func() {

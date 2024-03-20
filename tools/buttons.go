@@ -13,11 +13,8 @@ import (
 
 func OpenFile(win fyne.Window) {
 	fileDialog := dialog.NewFileOpen(func(reader fyne.URIReadCloser, err error) {
-		if err != nil {
+		if err != nil || reader == nil {
 			dialog.ShowError(err, win)
-			return
-		}
-		if reader == nil {
 			return
 		}
 		defer func(reader fyne.URIReadCloser) {
@@ -61,12 +58,7 @@ func SaveFile(win fyne.Window, data []interface{}, openedFilePath string) {
 	}
 }
 
-func ExportData(win fyne.Window) {
-
-	data := map[string]interface{}{
-		"key": "value",
-	}
-
+func ExportData(win fyne.Window, data []interface{}) {
 	saveDialog := dialog.NewFileSave(func(uc fyne.URIWriteCloser, err error) {
 		if err != nil || uc == nil {
 			return
@@ -84,6 +76,5 @@ func ExportData(win fyne.Window) {
 		}
 	}, win)
 
-	saveDialog.SetFileName("data.json")
 	saveDialog.Show()
 }
