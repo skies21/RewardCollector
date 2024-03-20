@@ -56,6 +56,7 @@ func SaveFile(win fyne.Window, data []interface{}, openedFilePath string) {
 		dialog.ShowError(err, win)
 		return
 	}
+	dialog.ShowInformation("Save Success", "Data successfully saved", win)
 }
 
 func ExportData(win fyne.Window, data []interface{}) {
@@ -74,6 +75,7 @@ func ExportData(win fyne.Window, data []interface{}) {
 			dialog.ShowError(err, nil)
 			return
 		}
+		dialog.ShowInformation("Export Success", "Data successfully exported", win)
 	}, win)
 
 	saveDialog.Show()

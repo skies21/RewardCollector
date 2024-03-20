@@ -20,7 +20,7 @@ func CreateToolbar(win fyne.Window, data []interface{}, openedFilePath string) *
 		ExportData(win, data)
 	})
 
-	filterButton := widget.NewToolbarAction(theme.HelpIcon(), func() {
+	filterButton := widget.NewToolbarAction(theme.ViewRefreshIcon(), func() {
 		filteredData := table.FilterTable(data)
 		UpdateWin(win, filteredData, openedFilePath)
 	})
