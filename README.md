@@ -12,7 +12,11 @@ To get started with the Reward Collector project, follow these steps:
    ```
    go run main.go
    ```
-
+5. To work, you will need a data .json file in the format:
+   ```
+   [{"amount":1,"gameType":"ARCADE", "rarity":"COMMON","reward":"1 coin"}]
+   ```
+The application will create a window with a table that can be filtered by rarity. 
 
 
 
